@@ -54,7 +54,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": ["npx vercel -t $VERCEL_TOKEN"],
-            "readyWhen": "Inspect"
+            "readyWhen": "Building"
           }
         }
       }
