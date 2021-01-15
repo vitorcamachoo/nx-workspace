@@ -8,9 +8,7 @@
       "targets": {
         "build": {
           "executor": "@nrwl/next:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "root": "apps/application-1",
             "outputPath": "dist/apps/application-1"
@@ -41,19 +39,24 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/application-1/**/*.{ts,tsx}"
-            ]
+            "lintFilePatterns": ["apps/application-1/**/*.{ts,tsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/application-1"
-          ],
+          "outputs": ["coverage/apps/application-1"],
           "options": {
             "jestConfig": "apps/application-1/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "deploy": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "VERCEL_PROJECT_ID=$BACKOFFICE_STAFF_PROJECT_ID npx vercel -t $VERCEL_TOKEN"
+            ],
+            "readyWhen": "Inspect"
           }
         }
       }
