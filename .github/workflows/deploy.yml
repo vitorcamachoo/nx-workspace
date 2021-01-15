@@ -34,7 +34,7 @@ jobs:
       - name: Fetch other branches
         run: git fetch --no-tags --prune --depth=5 origin $GITHUB_BASE_REF
 
-      - uses: mansagroup/nrwl-nx-action@v1
+      - uses: mansagroup/nrwl-nx-action
         with:
           targets: deploy
 
