@@ -32,6 +32,5 @@ jobs:
         shell: bash
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.ORG_ID}}
-          BACKOFFICE_STAFF_PROJECT_ID: ${{ secrets.BACK_OFFICE_STAFF_PROJECT_ID}}
-          BACKOFFICE_PRODUCER_PROJECT_ID: ${{ secrets.BACK_OFFICE_PRODUCER_PROJECT_ID}}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID}}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID}}
