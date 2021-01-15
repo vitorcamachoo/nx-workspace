@@ -31,9 +31,6 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: Fetch other branches
-        run: git fetch --no-tags --prune --depth=5 origin $GITHUB_BASE_REF
-
       - name: Deploy affected applications
         run: npm run affected:deploy -- --parallel --base=${{ github.event.before }}
         shell: bash
