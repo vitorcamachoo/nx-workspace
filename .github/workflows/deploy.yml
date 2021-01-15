@@ -22,16 +22,14 @@ jobs:
           node-version: 15.x
 
       - uses: actions/cache@v2
+        id: npm-cache
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install packages
-        run: yarn install
-
-      # - name: Install Dependencies
-      #   if: steps.npm-validation.outputs.cache-hit != 'true'
-      #   run: npm install
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm install
 
       - name: Fetch other branches
         run: git fetch --no-tags --prune --depth=5 origin $GITHUB_BASE_REF
