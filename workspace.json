@@ -53,9 +53,7 @@
         "deploy": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "VERCEL_PROJECT_ID=$BACKOFFICE_STAFF_PROJECT_ID npx vercel -t $VERCEL_TOKEN"
-            ],
+            "commands": ["npx vercel -t $VERCEL_TOKEN"],
             "readyWhen": "Inspect"
           }
         }
