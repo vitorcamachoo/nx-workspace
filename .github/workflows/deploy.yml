@@ -38,6 +38,6 @@ jobs:
         with:
           # more about GitHub secrets https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-          vercel-preview-url: ${{ github.event.deployment_status.target_url }} #Required
+          vercel-preview-url: nrwl-workspace-11111111.vercel.app #Required
           vercel-target-url: https://test-deploy-nwrl-workspace.vercel.app #Required
           
