@@ -33,14 +33,11 @@ jobs:
       - name: Deploy affected applications
         run: npm run affected:deploy -- --parallel --base=${{ github.event.before }}      
         shell: bash
-       
-      - name: vercel-preview-url
-        uses: zentered/vercel-preview-url@v1.0.0
-        id: vercel_preview_url
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    
+      - uses: emregency/vercel-preview-alias@v1.5
         with:
-          vercel_team_id:  ${{ secrets.VERCEL_ORG_ID }}
-          vercel_project_id:  ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: Get URL
-        run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
+          # more about GitHub secrets https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-preview-url: ${{ github.event.deployment_status.target_url }} #Required
+          vercel-target-url: https://test-deploy-nwrl-workspace.vercel.app #Required
+          
