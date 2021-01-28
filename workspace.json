@@ -53,7 +53,7 @@
         "deploy": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["npx vercel -t $VERCEL_TOKEN"],
+            "commands": ["npx inspect nrwl-workspace-23yvflcvf.vercel.app"],
             "readyWhen": "Building"
           }
         }
