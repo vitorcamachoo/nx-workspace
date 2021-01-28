@@ -38,9 +38,9 @@ jobs:
         uses: zentered/vercel-preview-url@v1.0.0
         id: vercel_preview_url
         env:
-          VERCEL_TOKEN: ${{ env.VERCEL_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
-          vercel_team_id:  ${{ env.VERCEL_ORG_ID }}
-          vercel_project_id:  ${{ env.VERCEL_PROJECT_ID }}
+          vercel_team_id:  ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id:  ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Get URL
         run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
