@@ -49,16 +49,6 @@
             "jestConfig": "apps/application-1/jest.config.js",
             "passWithNoTests": true
           }
-        },
-        "deploy": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "BRANCH=$(echo $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) | tr / -)",
-              "URL=$(VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN)",
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN alias *.vitorcamacho.vercel.app $BRANCH.vitorcamacho.vercel.app"
-            ]
-          }
         }
       }
     },
@@ -132,14 +122,6 @@
           "options": {
             "jestConfig": "apps/application-2/jest.config.js",
             "passWithNoTests": true
-          }
-        },
-        "deploy": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_2 npx vercel -t $VERCEL_TOKEN"
-            ]
           }
         }
       }
