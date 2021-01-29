@@ -54,8 +54,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "URL=$(VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel)",
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel --alias *.vitorcamacho.vercel.app $URL"
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel"
             ]
           }
         }
