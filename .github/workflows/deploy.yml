@@ -69,7 +69,9 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
     steps:
-      - run: echo ${{needs.prepare.outputs.matrix}}
+      - run: |
+          echo ${{matrix.project}}
+          echo ${{matrix.config}}
       
   
   # deploy:
