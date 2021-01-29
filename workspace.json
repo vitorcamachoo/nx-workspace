@@ -54,7 +54,7 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel"
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN"
             ]
           }
         }
