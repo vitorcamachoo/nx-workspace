@@ -67,8 +67,7 @@ jobs:
     needs: prerun
     strategy:
       matrix:
-        client: ${{ fromJson(needs.prerun.outputs.matrix) }}
-        server: ${{ fromJson(needs.prerun.outputs.matrix) }}
+        client: ${{ needs.prerun.outputs.matrix }}
     steps:
       # - run: 'echo affected: ${{ matrix.affected }}'
       # - id: apps
@@ -76,9 +75,9 @@ jobs:
       # - run: echo ${{ steps.apps.outputs.output }}
       # - id: parsed
       #   run: echo "::set-output name=matrix::[$(echo ${{ steps.apps.outputs.output}} | sed 's/ /,/g')]''"
-      - run: echo ${{ matrix }}
-      - run: echo ${{ matrix.project }}
-      - run: echo ${{ matrix.config }}
+      - run: echo ${{ matrix.client }}
+      - run: echo ${{ matrix.client.project }}
+      - run: echo ${{ matrix.client.config }}
 
       
   
