@@ -53,7 +53,9 @@
         "deploy": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["npx inspect nrwl-workspace-23yvflcvf.vercel.app"],
+            "commands": [
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel"
+            ],
             "readyWhen": "Building"
           }
         }
@@ -129,6 +131,15 @@
           "options": {
             "jestConfig": "apps/application-2/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "deploy": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_2 npx vercel"
+            ],
+            "readyWhen": "Building"
           }
         }
       }
