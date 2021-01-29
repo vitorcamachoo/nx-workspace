@@ -65,7 +65,7 @@ jobs:
     # strategy:
     #   matrix: ${{fromJson(needs.prepare.outputs.affected)}}
     steps:
-      - run: echo ${{fromJson(needs.prepare.outputs.affected)}}
+      - run: echo ${{needs.prepare.outputs.affected}}
       
   
   # deploy:
