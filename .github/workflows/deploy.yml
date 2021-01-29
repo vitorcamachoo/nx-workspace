@@ -48,22 +48,25 @@ jobs:
         run: npm install
       
       - name: print changed
-        run: echo '${{ steps.nx-changes.outputs.changed-dirs }}'
+        run: |
+          echo default: ${{ steps.nx-changes.outputs.changed-dirs }}
+          echo toJson: ${{ toJson(steps.nx-changes.outputs.changed-dirs) }}
+          echo fromJson: ${{ fromJson(steps.nx-changes.outputs.changed-dirs) }}
 
     outputs:
-      changed: '${{ steps.nx-changes.outputs.changed-dirs }}'
+      affected: ${{ steps.nx-changes.outputs.changed-dirs }}
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
-  deploy:
-    if: needs.prerun.outputs.skip == 'false'
-    runs-on: ubuntu-latest
-    needs: [prerun]
-    # strategy:
-    #   matrix: 
-    #     changed: ${{ toJson(needs.prerun.outputs.changed) }}
-    steps:
-      - run: 'echo ${{ needs.prerun.outputs.changed }}'
-      - run: 'echo ${{ toJson(needs.prerun.outputs.changed) }}'
+  # deploy:
+  #   if: needs.prerun.outputs.skip == 'false'
+  #   runs-on: ubuntu-latest
+  #   needs: [prerun]
+  #   # strategy:
+  #   #   matrix: 
+  #   #     affected: ${{ toJson(needs.prerun.outputs.affected) }}
+  #   steps:
+  #     - run: 'echo ${{ needs.prerun.outputs.affected }}'
+  #     - run: 'echo ${{ toJson(needs.prerun.outputs.affected) }}'
   
   # deploy:
   #   # if: "!contains(github.event.head_commit.message, '[skip ci]')"
