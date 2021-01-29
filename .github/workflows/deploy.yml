@@ -76,7 +76,9 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_1 }} 
           vercel-args: '--prod'
-          working-directory: .
+          alias-domains: |
+            *.vitorcamacho.vercel.app
+            {{BRANCH}}.vitorcamacho.vercel.app
       - name: Deploy Backoffice Staff
         if: contains(matrix.affected, 'application-2')
         uses: amondnet/vercel-action@v20
@@ -86,4 +88,3 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
           vercel-args: '--prod'
-          working-directory: .
