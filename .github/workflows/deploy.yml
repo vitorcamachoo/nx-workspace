@@ -8,66 +8,66 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  # prepare:
-  #   runs-on: ubuntu-latest
-  #   name: Preparing environment
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         ref: ${{ github.event.pull_request.head.ref }}
-  #         fetch-depth: 0
+  prepare:
+    runs-on: ubuntu-latest
+    name: Preparing environment
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       
-  #     - name: Retrieving base and head references
-  #       shell: bash
-  #       id: branch
-  #       run:  |
-  #         echo "::set-output name=HEAD::${{ github.sha }}"
-  #         if [[ $GITHUB_BASE_REF ]]
-  #         then
-  #           echo "::set-output name=BASE_BRANCH::${GITHUB_HEAD_REF}"
-  #         else
-  #           echo "::set-output name=BASE_BRANCH::${GITHUB_REF#refs/heads/}~1"
-  #         fi
+      - name: Retrieving base and head references
+        shell: bash
+        id: branch
+        run:  |
+          echo "::set-output name=HEAD::${{ github.sha }}"
+          if [[ $GITHUB_BASE_REF ]]
+          then
+            echo "::set-output name=BASE_BRANCH::${GITHUB_HEAD_REF}"
+          else
+            echo "::set-output name=BASE_BRANCH::${GITHUB_REF#refs/heads/}~1"
+          fi
       
-  #     - name: Detect changed directories
-  #       uses: gagle/nx-check-changes@v1.0.0
-  #       id: nx-changes
-  #       with:
-  #         baseRef: ${{ steps.branch.outputs.BASE_BRANCH }}
-  #         headRef: ${{ steps.branch.outputs.HEAD }}
+      - name: Detect changed directories
+        uses: gagle/nx-check-changes@v1.0.0
+        id: nx-changes
+        with:
+          baseRef: ${{ steps.branch.outputs.BASE_BRANCH }}
+          headRef: ${{ steps.branch.outputs.HEAD }}
 
-  #     - uses: actions/cache@v2
-  #       id: npm-cache
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - uses: actions/cache@v2
+        id: npm-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-  #     - name: Install Dependencies
-  #       if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
-  #       run: npm install
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
+        run: npm install
          
-  #     - name: Parsing affected applications
-  #       id: parser
-  #       run: | 
-  #         echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]"
-  #         echo Affected: [$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]
+      - name: Parsing affected applications
+        id: parser
+        run: | 
+          echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]"
+          echo Affected: [$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]
           
-  #   outputs:
-  #     affected: ${{ steps.parser.outputs.affected }}
-  #     skip: ${{ steps.nx-changes.outputs.not-affected }}
+    outputs:
+      affected: ${{ steps.parser.outputs.affected }}
+      skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
-    # if: needs.prepare.outputs.skip == 'false'
+    if: needs.prepare.outputs.skip == 'false'
     runs-on: ubuntu-latest
-    # needs: [prepare]
-    # strategy:
-    #   matrix: 
-    #     affected: ${{ fromJson(needs.prepare.outputs.affected) }}
+    needs: [prepare]
+    strategy:
+      matrix: 
+        affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
       - run: ${{ needs.prepare.outputs.affected }}
       - name: Deploy Backoffice Producer
-        # if: contains(steps.parser.outputs.affected, 'apps/application-1')
+        if: contains(steps.parser.outputs.affected, matrix.affected)
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -77,7 +77,7 @@ jobs:
           vercel-args: '--prod'
           working-directory: .
       - name: Deploy Backoffice Staff
-        # if: contains(steps.parser.outputs.affected, 'apps/application-2')
+        if: contains(steps.parser.outputs.affected, matrix.affected)
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
