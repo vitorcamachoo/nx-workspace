@@ -62,29 +62,28 @@ jobs:
     needs: [prepare]
     strategy:
       matrix: 
-        affected: ${{fromJson(needs.prepare.outputs.affected)}}
+        affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
+      - run: |
+          echo Affected apps: ${{ needs.prepare.outputs.affected }}
       - name: Deploy Backoffice Producer
         if: contains(steps.parser.outputs.affected, 'apps/application-1')
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
-          vercel-args: '--prod'
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
-          working-directory: ./apps/application-1
+          vercel-args: '--prod'
 
       - name: Deploy Backoffice Staff
         if: contains(steps.parser.outputs.affected, 'apps/application-2')
+        run: 
+          echo 'Contains!!!'
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
-          vercel-args: '--prod'
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
-          working-directory: ./apps/application-2
-          alias-domains: |
-            nrwl-workspace.vercel.app
-            {{BRANCH}}.nrwl-workspace.vercel.app
+          vercel-args: '--prod'
