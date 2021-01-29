@@ -47,22 +47,20 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
       
-      - uses: xom9ikk/split@v1
-        id: changed
-        with:
-          string: '${{ steps.nx-changes.outputs.changed-dirs }}'
-      
+      - name: print changed
+        run: echo '${{ steps.nx-changes.outputs.changed-dirs }}'
+
     outputs:
-      changed: '${{ steps.changed.outputs }}'
+      changed: '${{ steps.nx-changes.outputs.changed-dirs }}'
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
     if: needs.prerun.outputs.skip == 'false'
     runs-on: ubuntu-latest
     needs: [prerun]
-    strategy:
-      matrix: 
-        changed: ${{ needs.prerun.outputs.changed }}
+    # strategy:
+    #   matrix: 
+    #     changed: ${{ toJson(needs.prerun.outputs.changed) }}
     steps:
       - run: 'echo ${{ needs.prerun.outputs.changed }}'
       - run: 'echo ${{ toJson(needs.prerun.outputs.changed) }}'
