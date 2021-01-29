@@ -59,7 +59,7 @@ jobs:
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
-    if: needs.prepare.outputs.skip == 'false'
+    # if: needs.prepare.outputs.skip == 'false'
     runs-on: ubuntu-latest
     needs: [prepare]
     # strategy:
