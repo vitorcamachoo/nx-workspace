@@ -48,16 +48,9 @@ jobs:
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
-         
-      - name: Parsing affected applications
-        id: parser
-        run: | 
-          echo "${{ steps.split.outputs}}"
-          echo "[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
-          echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
      
     outputs:
-      affected: ${{ steps.parser.outputs.affected }}
+      affected: \"[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]\"
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
@@ -67,6 +60,7 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.prepare.outputs.affected)}}
     steps:
+      - run: echo ${{fromJson(needs.prepare.outputs.affected)}}
       - run: echo ${{matrix}}
       
   
