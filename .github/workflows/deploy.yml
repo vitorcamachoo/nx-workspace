@@ -36,10 +36,13 @@ jobs:
         with:
           baseRef: ${{ steps.branch.outputs.BASE_BRANCH }}
           headRef: ${{ steps.branch.outputs.HEAD }}
+      - uses: Print changed-dirs
+        run: echo ${}
       - uses: bahmutov/npm-install@v1
-        if: needs.pre-run.outputs.changed-dirs
+        if: steps.nx-changes.outputs.not-affected == 'false'
     outputs:
       changed-dirs: ${{ steps.nx-changes.outputs.changed-dirs }}
+      skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
     runs-on: ubuntu-latest
