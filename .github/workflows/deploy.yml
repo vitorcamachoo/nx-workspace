@@ -48,7 +48,7 @@ jobs:
     needs: [pre-run]
     strategy:
       matrix: 
-        changed: ${{ fromJson(needs.pre-run.outputs.changed-dirs) }}
+        changed: ${{ needs.pre-run.outputs.changed-dirs }}
     steps:
       - run: 'echo project: ${{ matrix.changed }}'
   
