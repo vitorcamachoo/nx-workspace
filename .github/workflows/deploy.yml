@@ -36,8 +36,17 @@ jobs:
         with:
           baseRef: ${{ steps.branch.outputs.BASE_BRANCH }}
           headRef: ${{ steps.branch.outputs.HEAD }}
-      - uses: bahmutov/npm-install@v1
-        if: steps.nx-changes.outputs.not-affected == 'false'
+
+      - uses: actions/cache@v2
+        id: npm-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
+        run: npm install
+
     outputs:
       changed: '${{ steps.nx-changes.outputs.changed-dirs }}'
       skip: ${{ steps.nx-changes.outputs.not-affected }}
