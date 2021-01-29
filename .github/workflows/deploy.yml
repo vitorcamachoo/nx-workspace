@@ -46,9 +46,14 @@ jobs:
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
-
+      
+      - uses: xom9ikk/split@v1
+        id: changed
+        with:
+          string: '${{ steps.nx-changes.outputs.changed-dirs }}'
+      
     outputs:
-      changed: '${{ steps.nx-changes.outputs.changed-dirs }}'
+      changed: '${{ steps.changed.outputs }}'
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
