@@ -12,7 +12,6 @@ jobs:
     
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      affected: "[\"apps/application-1\",\"apps/application-1\"}]"
       # skip: ${{ steps.nx-changes.outputs.not-affected }}
 
 
@@ -21,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        affected: ${{fromJson(needs.job1.outputs.affected)}}
+        affected: ${{fromJson(needs.job1.outputs.matrix)}}
     steps:
     - run: |
         echo ${{ matrix }}
