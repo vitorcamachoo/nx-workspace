@@ -54,9 +54,12 @@ jobs:
         run: | 
           echo apps/application-1 apps/application-2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g'
           echo "::set-output name=affected::{\"include\":[$(echo apps/application-1 apps/application-2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]}"
+          echo "::set-output name=matrix::[\"project\", \"Release\"]"
+
      
     outputs:
       affected: ${{ steps.parser.outputs.affected }}
+      matrix: ${{ steps.parser.outputs.matrix }}
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
@@ -64,9 +67,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [prepare]
     strategy:
-      matrix: ${{fromJson(needs.prepare.outputs.affected)}}
+      matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
     steps:
-      - run: echo ${{needs.prepare.outputs.affected}}
+      - run: echo ${{needs.prepare.outputs.matrix}}
       
   
   # deploy:
