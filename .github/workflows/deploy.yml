@@ -78,8 +78,6 @@ jobs:
 
       - name: Deploy Backoffice Staff
         if: contains(steps.parser.outputs.affected, 'apps/application-2')
-        run: 
-          echo 'Contains!!!'
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
