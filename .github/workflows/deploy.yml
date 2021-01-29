@@ -52,11 +52,16 @@ jobs:
         uses: lucaspinheirogit/list-from-string-array-action@v1.4.3
         with:
           stringArray: ${{ steps.nx-changes.outputs.changed-dirs }}
+      - uses: rishabhgupta/split-by@v1
+        id: split
+        with:
+          string: ${{ steps.nx-changes.outputs.changed-dirs }}
+          split-by: ' '
 
       - name: print changed
         run: |
           echo default: ${{ steps.nx-changes.outputs.changed-dirs }}
-          echo list: ${{ steps.list.outputs.stringList }}
+          echo list: ${{ steps.split.outputs }}
           echo toJson: ${{ toJson(steps.nx-changes.outputs.changed-dirs) }}
 
     outputs:
