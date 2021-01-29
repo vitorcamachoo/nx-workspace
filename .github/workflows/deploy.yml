@@ -50,7 +50,7 @@ jobs:
         run: npm install
 
     outputs:
-      affected: "[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed 's/ /,/g')]"
+      affected: "{\"affected\":[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed 's/ /,/g')]}"
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
@@ -58,8 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [prerun]
     strategy:
-      matrix: 
-        affected: ${{fromJson(needs.prerun.outputs.affected)}}
+      matrix: ${{fromJson(needs.prerun.outputs.affected)}}
     steps:
       # - run: 'echo affected: ${{ matrix.affected }}'
       # - id: apps
