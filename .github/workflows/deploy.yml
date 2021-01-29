@@ -47,11 +47,6 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
 
-      - name: Create list of modified files
-        id: list
-        uses: lucaspinheirogit/list-from-string-array-action@v1.4.3
-        with:
-          stringArray: ${{ steps.nx-changes.outputs.changed-dirs }}
       - uses: rishabhgupta/split-by@v1
         id: split
         with:
@@ -61,7 +56,7 @@ jobs:
       - name: print changed
         run: |
           echo default: ${{ steps.nx-changes.outputs.changed-dirs }}
-          echo list: ${{ steps.split.outputs }}
+          echo list: ${{ fromJson(steps.split.outputs) }}
           echo toJson: ${{ toJson(steps.nx-changes.outputs.changed-dirs) }}
 
     outputs:
