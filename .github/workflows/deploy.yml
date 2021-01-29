@@ -11,7 +11,7 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-  pre-run:
+  prerun:
     runs-on: ubuntu-latest
     name: Preparing environment
     steps:
@@ -39,18 +39,19 @@ jobs:
       - uses: bahmutov/npm-install@v1
         if: steps.nx-changes.outputs.not-affected == 'false'
     outputs:
-      changed-dirs: ${{ steps.nx-changes.outputs.changed-dirs }}
+      changed: '${{ steps.nx-changes.outputs.changed-dirs }}'
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
-    if: needs.pre-run.outputs.skip == 'false'
+    if: needs.prerun.outputs.skip == 'false'
     runs-on: ubuntu-latest
-    needs: [pre-run]
+    needs: [prerun]
     strategy:
       matrix: 
-        changed: ${{ needs.pre-run.outputs.changed-dirs }}
+        changed: ${{ toJson(needs.prerun.outputs.changed) }}
     steps:
-      - run: 'echo project: ${{ matrix.changed }}'
+      - run: 'echo ${{ matrix.changed }}'
+      - run: 'echo ${{ toJson(matrix.changed) }}'
   
   # deploy:
   #   # if: "!contains(github.event.head_commit.message, '[skip ci]')"
