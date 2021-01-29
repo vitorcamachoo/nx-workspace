@@ -64,8 +64,11 @@ jobs:
       matrix: 
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
+      - uses: actions/checkout@v2
+
       - run: |
           echo Affected apps: ${{ needs.prepare.outputs.affected }}
+
       - name: Deploy Backoffice Producer
         # if: contains(steps.parser.outputs.affected, 'apps/application-1')
         uses: amondnet/vercel-action@v20
