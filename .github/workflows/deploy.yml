@@ -1,36 +1,3 @@
-
-# name: build
-
-# on: push
-
-# jobs:
-#   job1:
-#     runs-on: ubuntu-latest
-#     steps:
-      - uses: rishabhgupta/split-by@v1
-        id: split
-        with:
-          string: 'application-1 application-2'
-          split-by: ','
-      - id: parser
-        run: | 
-          echo "${{ steps.split.outputs}}"
-          echo "::set-output name=matrix::[$(echo app1 app2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
-      - run: |
-          echo '${{ steps.parser.outputs.matrix }}'
-    outputs:
-      matrix: ${{ steps.parser.outputs.matrix }}
-
-#   job2:
-#     needs: job1
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix: 
-#         affected: ${{fromJson(needs.job1.outputs.matrix)}}
-#     steps:
-#     - run: |
-#         echo ${{ matrix }}
-
 name: Deploy
 
 on:
