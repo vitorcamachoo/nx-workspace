@@ -11,7 +11,7 @@ jobs:
     name: Installing Dependencies
     steps:
       - uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@master
+      - uses: bahmutov/npm-install@v1
       - name: Finish
         run: echo Finish
   # deploy:
