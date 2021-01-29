@@ -52,7 +52,7 @@ jobs:
       - name: Parsing affected applications
         id: parser
         run: | 
-          echo "::set-output name=affected::\"[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]\""
+          echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
      
     outputs:
       affected: ${{ steps.parser.outputs.affected }}
