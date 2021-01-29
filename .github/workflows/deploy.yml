@@ -68,7 +68,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Deploy Backoffice Producer
-        if: contains(affected-string, matrix.affected)
+        if: contains(steps.parser.outputs.affected-string, matrix.affected)
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -78,7 +78,7 @@ jobs:
           vercel-args: '--prod'
           working-directory: .
       - name: Deploy Backoffice Staff
-        if: contains(affected-string, matrix.affected)
+        if: contains(steps.parser.outputs.affected-string, matrix.affected)
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
