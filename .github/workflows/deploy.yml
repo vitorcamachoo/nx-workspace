@@ -48,17 +48,25 @@ jobs:
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
+      
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
+        run: npm install
+      
+      - name: Parse matrix
+        run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
-    outputs:
-      affected: "{\"affected\":[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed 's/ /,/g')]}"
-      skip: ${{ steps.nx-changes.outputs.not-affected }}
+    # outputs:
+    #   # affected: "{\"affected\":[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed 's/ /,/g')]}"
+    #   # affected: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+    #   skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
-    if: needs.prerun.outputs.skip == 'false'
+    # if: needs.prerun.outputs.skip == 'false'
     runs-on: ubuntu-latest
     needs: [prerun]
     strategy:
-      matrix: ${{fromJson(needs.prerun.outputs.affected)}}
+      matrix: ${{fromJson(needs.prerun.outputs.matrix)}}
     steps:
       # - run: 'echo affected: ${{ matrix.affected }}'
       # - id: apps
