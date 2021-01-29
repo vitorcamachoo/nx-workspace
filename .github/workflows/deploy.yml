@@ -73,7 +73,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} 
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_1 }} 
           vercel-args: '--prod'
           working-directory: .
       - name: Deploy Backoffice Staff
@@ -83,6 +83,6 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} 
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
           vercel-args: '--prod'
           working-directory: .
