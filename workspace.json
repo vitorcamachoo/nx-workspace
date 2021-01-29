@@ -54,7 +54,8 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN"
+              "URL=$(VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN)",
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN --alias *.vitorcamacho.vercel.app test-deploy.vitorcamacho.vercel.app"
             ]
           }
         }
