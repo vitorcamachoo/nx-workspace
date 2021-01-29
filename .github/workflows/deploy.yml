@@ -5,6 +5,9 @@ on:
     branches-ignore:
       - 'dependabot/**'
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 jobs:
   prepare:
     runs-on: ubuntu-latest
