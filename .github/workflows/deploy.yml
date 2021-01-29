@@ -54,7 +54,7 @@ jobs:
         run: | 
           echo apps/application-1 apps/application-2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g'
           echo "::set-output name=affected::{\"include\":[$(echo apps/application-1 apps/application-2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]}"
-          echo "::set-output name=matrix::[\"project\", \"Release\"]"
+          echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
      
     outputs:
