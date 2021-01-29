@@ -49,14 +49,8 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
 
-      - uses: rishabhgupta/split-by@v1
-        id: split
-        with:
-          string: ${{ steps.nx-changes.outputs.changed-dirs }}
-          split-by: ' '
-
     outputs:
-      affected: ${{ steps.split.outputs }}
+      affected: "[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed 's/ /,/g')]"
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
@@ -65,9 +59,16 @@ jobs:
     needs: [prerun]
     strategy:
       matrix: 
-        affected: ${{ needs.prerun.outputs.affected }}
+        affected: ${{fromJson(needs.prerun.outputs.affected)}}
     steps:
-      - run: 'echo affected: ${{ matrix.affected }}'
+      # - run: 'echo affected: ${{ matrix.affected }}'
+      # - id: apps
+      #   run: echo "::set-output name=output::'apps/application-1 apps/application-2'"
+      # - run: echo ${{ steps.apps.outputs.output }}
+      # - id: parsed
+      #   run: echo "::set-output name=matrix::[$(echo ${{ steps.apps.outputs.output}} | sed 's/ /,/g')]''"
+      - run: echo ${{matrix.affected}}
+      
   
   # deploy:
   #   # if: "!contains(github.event.head_commit.message, '[skip ci]')"
