@@ -75,6 +75,7 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
           vercel-args: '--prod'
+          working-directory: .
 
       - name: Deploy Backoffice Staff
         # if: contains(steps.parser.outputs.affected, 'apps/application-2')
@@ -85,3 +86,4 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
           vercel-args: '--prod'
+          working-directory: .
