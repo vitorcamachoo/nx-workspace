@@ -54,8 +54,9 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
+              "BRANCH=$(echo $(git branch | grep \"*\") | tr / -)",
               "URL=$(VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN)",
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN alias *.vitorcamacho.vercel.app $(echo $(git branch | grep \"*\") | tr / -).vitorcamacho.vercel.app"
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN alias *.vitorcamacho.vercel.app $BRANCH.vitorcamacho.vercel.app"
             ]
           }
         }
