@@ -49,9 +49,11 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
          
-      - id: parser
+      - name: Parsing affected applications
+        id: parser
         run: | 
           echo "${{ steps.split.outputs}}"
+          echo "[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
           echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
      
     outputs:
