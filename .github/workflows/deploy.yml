@@ -10,17 +10,22 @@ jobs:
       - uses: rishabhgupta/split-by@v1
         id: split
         with:
-          string: 'application-1,application-2'
+          string: 'application-1 application-2'
           split-by: ','
-      - run: | 
-          echo "${{ toJson(steps.split.outputs)}}"
-          ::set-output name=matrix::${toJson(steps.split.outputs)}
-
-    # - run: |
-    #     echo ${{ steps.set-matrix.outputs.arr }}
-    # outputs:
-    #   matrix: ${{ steps.set-matrix.outputs.matrix }}
-
+      - id: parser
+        run: | 
+          echo "${{ steps.split.outputs}}"
+          echo "::set-output name=matrix::[$(echo app1 app2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]"
+      - name: Create list of modified files
+        id: modified_files_list
+        uses: lucaspinheirogit/list-from-string-array-action@v1.4.3
+        with:
+          stringArray: ${{ steps.parser.outputs.matrix }}
+      - run: |
+          echo '${{ steps.parser.outputs.matrix }}'
+          echo '${{ steps.modified_files_list.outputs.stringList }}'
+    outputs:
+      matrix: ${{ steps.parser.outputs.matrix }}
 
   job2:
     needs: job1
