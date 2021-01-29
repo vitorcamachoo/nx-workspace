@@ -66,10 +66,7 @@ jobs:
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          echo affected: ${{ contains(needs.prepare.outputs.affected, "apps/application-1") }}
-          echo affected: ${{ contains(fromJson(needs.prepare.outputs.affected), "apps/application-1") }}
-          echo ${{ matrix.affected }} 
+     
       - name: Deploy Backoffice Producer
         if: contains(needs.prepare.outputs.affected, "application-1")
         uses: amondnet/vercel-action@v20
