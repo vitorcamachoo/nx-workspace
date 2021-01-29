@@ -73,6 +73,7 @@ jobs:
       
       - run: npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }}
         env:
+          BRANCH: ${GITHUB_REF#refs/heads/*/}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID_APP_1: ${{ secrets.VERCEL_PROJECT_ID_APP_1 }} 
