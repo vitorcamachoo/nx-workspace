@@ -6,13 +6,12 @@ on: push
 jobs:
   job1:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - id: set-matrix
       run: echo "::set-output name=matrix::[\"apps/application-1\",\"apps/application-1\"}]"
     
     outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
       affected: "[\"apps/application-1\",\"apps/application-1\"}]"
       # skip: ${{ steps.nx-changes.outputs.not-affected }}
 
