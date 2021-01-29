@@ -59,7 +59,7 @@ jobs:
   deploy:
     # if: needs.prepare.outputs.skip == 'false'
     runs-on: ubuntu-latest
-    needs: [prepare]
+    # needs: [prepare]
     # strategy:
     #   matrix: 
     #     affected: ${{ fromJson(needs.prepare.outputs.affected) }}
