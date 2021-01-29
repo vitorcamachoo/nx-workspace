@@ -7,11 +7,19 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-    - id: set-matrix
-      run: echo "::set-output name=matrix::[\"apps/application-1,apps/application-2\"]"
-    
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      - uses: rishabhgupta/split-by@v1
+        id: split
+        with:
+          string: 'application-1,application-2'
+          split-by: ','
+      - run: | 
+          echo "${{ toJson(steps.split.outputs)}}"
+          ::set-output name=matrix::${steps.split.outputs}
+
+    # - run: |
+    #     echo ${{ steps.set-matrix.outputs.arr }}
+    # outputs:
+    #   matrix: ${{ steps.set-matrix.outputs.matrix }}
 
 
   job2:
@@ -19,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        affected: ${{fromJson(needs.job1.outputs.matrix)}}
+        affected: ${{needs.job1.outputs.matrix}}
     steps:
     - run: |
         echo ${{ matrix }}
