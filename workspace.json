@@ -53,9 +53,7 @@
         "deploy": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN"
-            ]
+            "commands": ["export"]
           }
         }
       }
@@ -135,9 +133,7 @@
         "deploy": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_2 npx vercel"
-            ]
+            "commands": ["export"]
           }
         }
       }
