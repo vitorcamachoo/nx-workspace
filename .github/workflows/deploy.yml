@@ -52,6 +52,7 @@ jobs:
       - name: Parsing affected applications
         id: parser
         run: | 
+          echo apps/application-1 apps/application-2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g'
           echo "::set-output name=affected::{\"include\":[$(echo apps/application-1 apps/application-2 | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /,/g')]}"
      
     outputs:
