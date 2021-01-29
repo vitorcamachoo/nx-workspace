@@ -46,10 +46,17 @@ jobs:
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
-      
+
+      - name: Create list of modified files
+        id: list
+        uses: lucaspinheirogit/list-from-string-array-action@v1.4.3
+        with:
+          stringArray: ${{ steps.nx-changes.outputs.changed-dirs }}
+
       - name: print changed
         run: |
           echo default: ${{ steps.nx-changes.outputs.changed-dirs }}
+          echo list: ${{ steps.list.outputs.stringList }}
           echo toJson: ${{ toJson(steps.nx-changes.outputs.changed-dirs) }}
 
     outputs:
