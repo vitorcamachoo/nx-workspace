@@ -7,6 +7,8 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.secrets.VERCEL_ORG_ID }}
   
 jobs:
   prepare:
@@ -62,6 +64,10 @@ jobs:
     needs: [prepare]
     steps:
       - run: npm run affected:deploy
+        env:
+          VERCEL_PROJECT_ID_APP_1: ${{ secrets.VERCEL_PROJECT_ID_APP_1 }} 
+          VERCEL_PROJECT_ID_APP_2: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
+  
     # strategy:
     #   matrix: 
     #     affected: ${{ fromJson(needs.prepare.outputs.affected) }}
