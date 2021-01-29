@@ -14,7 +14,7 @@ jobs:
           split-by: ','
       - run: | 
           echo "${{ toJson(steps.split.outputs)}}"
-          ::set-output name=matrix::${steps.split.outputs}
+          ::set-output name=matrix::${toJson(steps.split.outputs)}
 
     # - run: |
     #     echo ${{ steps.set-matrix.outputs.arr }}
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        affected: ${{needs.job1.outputs.matrix}}
+        affected: ${{fromJson(needs.job1.outputs.matrix)}}
     steps:
     - run: |
         echo ${{ matrix }}
