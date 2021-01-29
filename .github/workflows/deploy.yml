@@ -19,6 +19,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+      
       - name: Retrieving base and head references
         shell: bash
         id: branch
@@ -30,6 +31,7 @@ jobs:
           else
             echo "::set-output name=BASE_BRANCH::${GITHUB_REF#refs/heads/}~1"
           fi
+      
       - name: Detect changed directories
         uses: gagle/nx-check-changes@v1.0.0
         id: nx-changes
@@ -56,8 +58,7 @@ jobs:
       - name: print changed
         run: |
           echo default: ${{ steps.nx-changes.outputs.changed-dirs }}
-          echo list: ${{ fromJson(steps.split.outputs) }}
-          echo toJson: ${{ toJson(steps.nx-changes.outputs.changed-dirs) }}
+          echo list: ${{ toJson(steps.split.outputs) }}
 
     outputs:
       affected: ${{ steps.nx-changes.outputs.changed-dirs }}
