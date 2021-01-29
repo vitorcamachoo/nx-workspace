@@ -78,7 +78,7 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.application1-vitorcamacho.app
-            ${{ GITHUB_REF##refs/*/ }}.application1-vitorcamacho.app
+            {{BRANCH}}.application1-vitorcamacho.app
 
       - name: Deploy Backoffice Staff
         if: contains(matrix.affected, 'application-2')
@@ -91,4 +91,4 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.application2-vitorcamacho.app
-            ${{ GITHUB_REF##refs/*/ }}.application2-vitorcamacho.app
+            {{BRANCH}}.application2-vitorcamacho.app
