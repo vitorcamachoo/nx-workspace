@@ -50,6 +50,7 @@ jobs:
       - name: print changed
         run: |
           echo default: ${{ steps.nx-changes.outputs.changed-dirs }}
+          echo toJson: ${{ toJson(steps.nx-changes.outputs.changed-dirs) }}
 
     outputs:
       affected: ${{ steps.nx-changes.outputs.changed-dirs }}
