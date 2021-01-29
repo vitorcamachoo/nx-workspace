@@ -66,8 +66,12 @@ jobs:
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          echo affected: ${{ contains(needs.prepare.outputs.affected, "apps/application-1") }}
+          echo affected: ${{ contains(fromJson(needs.prepare.outputs.affected), "apps/application-1") }}
+          echo ${{ matrix.affected }} 
       - name: Deploy Backoffice Producer
-        if: contains(fromJson(needs.prepare.outputs.affected), 'application-1')
+        if: contains(needs.prepare.outputs.affected, "application-1")
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -77,7 +81,7 @@ jobs:
           vercel-args: '--prod'
           working-directory: .
       - name: Deploy Backoffice Staff
-        if: contains(fromJson(needs.prepare.outputs.affected), 'application-2')
+        if: contains(fromJson(needs.prepare.outputs.affected), "application-2")
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
