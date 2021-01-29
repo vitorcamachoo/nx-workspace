@@ -69,11 +69,10 @@ jobs:
     needs: [prepare]
     strategy:
       matrix: 
-        affected: ${{fromJson(needs.prepare.outputs.matrix)}}
+        affected: ${{fromJson(needs.prepare.outputs.affected)}}
     steps:
       - run: |
-          echo ${{matrix.project}}
-          echo ${{matrix.config}}
+          echo ${{matrix}}
       
   
   # deploy:
