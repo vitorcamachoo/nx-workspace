@@ -88,4 +88,4 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.vitorcamacho.vercel.app
-            {{BRANCH}}.vitorcamacho.vercel.app
+            ${GITHUB_REF##refs/*/}.vitorcamacho.vercel.app
