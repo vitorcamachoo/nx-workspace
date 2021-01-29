@@ -88,3 +88,6 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
           vercel-args: '--prod'
+          alias-domains: |
+            *.vitorcamacho.vercel.app
+            {{BRANCH}}.vitorcamacho.vercel.app
