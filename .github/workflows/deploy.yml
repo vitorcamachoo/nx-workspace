@@ -8,15 +8,15 @@ on:
 jobs:
   pre-run:
     runs-on: ubuntu-latest
-    name: Installing Dependencies
+    name: Preparing environment
     steps:
       - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
       - name: Detect changed directories
         uses: gagle/nx-check-changes@v1.0.0
         id: nx-changes
-      - name: Finish
-        run: echo Finish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       changed-dirs: ${{ steps.nx-changes.outputs.changed-dirs }}
   deploy:
