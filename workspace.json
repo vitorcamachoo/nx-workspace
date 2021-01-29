@@ -54,9 +54,92 @@
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "VERCEL_PROJECT_ID=$BACKOFFICE_STAFF_PROJECT_ID npx vercel -t $VERCEL_TOKEN"
+              "BRANCH=$(echo $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) | tr / -)",
+              "URL=$(VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN)",
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN alias *.vitorcamacho.vercel.app $BRANCH.vitorcamacho.vercel.app"
+            ]
+          }
+        }
+      }
+    },
+    "application-2": {
+      "root": "apps/application-2",
+      "sourceRoot": "apps/application-2/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/application-2",
+            "index": "apps/application-2/src/index.html",
+            "main": "apps/application-2/src/main.tsx",
+            "polyfills": "apps/application-2/src/polyfills.ts",
+            "tsConfig": "apps/application-2/tsconfig.app.json",
+            "assets": [
+              "apps/application-2/src/favicon.ico",
+              "apps/application-2/src/assets"
             ],
-            "readyWhen": "Inspect"
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/application-2/src/environments/environment.ts",
+                  "with": "apps/application-2/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "application-2:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "application-2:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/application-2/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/application-2"],
+          "options": {
+            "jestConfig": "apps/application-2/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "deploy": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_2 npx vercel -t $VERCEL_TOKEN"
+            ]
           }
         }
       }
@@ -68,7 +151,16 @@
   "generators": {
     "@nrwl/react": {
       "application": {
+        "style": "none",
+        "linter": "eslint",
         "babel": true
+      },
+      "component": {
+        "style": "none"
+      },
+      "library": {
+        "style": "none",
+        "linter": "eslint"
       }
     },
     "@nrwl/next": {
