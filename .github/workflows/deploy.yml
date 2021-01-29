@@ -61,7 +61,7 @@ jobs:
   deploy:
     if: needs.prepare.outputs.skip == 'false'
     runs-on: ubuntu-latest
-    needs: [prerun]
+    needs: [prepare]
     strategy:
       matrix: ${{fromJson(needs.prepare.outputs.affected)}}
     steps:
