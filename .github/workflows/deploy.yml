@@ -65,7 +65,6 @@ jobs:
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-      - run: ${{ needs.prepare.outputs.affected }}
       - name: Deploy Backoffice Producer
         if: contains(steps.parser.outputs.affected, matrix.affected)
         uses: amondnet/vercel-action@v20
@@ -77,7 +76,6 @@ jobs:
           vercel-args: '--prod'
           working-directory: .
       - name: Deploy Backoffice Staff
-        if: contains(steps.parser.outputs.affected, matrix.affected)
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
