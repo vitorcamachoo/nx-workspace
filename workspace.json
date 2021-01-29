@@ -56,7 +56,7 @@
             "commands": [
               "BRANCH=$(echo $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) | tr / -)",
               "URL=$(VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN)",
-              "echoVERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN alias *.vitorcamacho.vercel.app $BRANCH.vitorcamacho.vercel.app"
+              "VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID_APP_1 npx vercel -t $VERCEL_TOKEN alias *.vitorcamacho.vercel.app $BRANCH.vitorcamacho.vercel.app"
             ]
           }
         }
