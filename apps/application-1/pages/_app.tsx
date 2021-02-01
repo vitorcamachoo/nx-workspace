@@ -8,7 +8,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Welcome 22to application-1!</title>
       </Head>
-      Last version: <br />
+      Last version:22 <br />
       Last version: <br />
       Last version: <br />
     </>
