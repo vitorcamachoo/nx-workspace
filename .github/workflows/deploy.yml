@@ -71,7 +71,7 @@ jobs:
         if: contains(matrix.affected, 'application-1')
         uses: amondnet/vercel-action@v20
         env: 
-          NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
+          NEXT_PUBLIC_CURRENT_BRANCH: feature/merge-develop
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
@@ -80,7 +80,7 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.vitorcamacho.vercel.app
-            ${{ needs.prepare.outputs.branch }}.vitorcamacho.vercel.app
+            {{needs.prepare.outputs.branch}}.vitorcamacho.vercel.app
 
   #     # - name: Deploy Backoffice Staff
   #     #   if: contains(matrix.affected, 'application-2')
