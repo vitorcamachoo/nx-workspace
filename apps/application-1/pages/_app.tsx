@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { ReactComponent as NxLogo } from '../public/nx-logo-white.svg';
 import './styles.css';
 
+console.log(process.env);
 console.log(process.env.NEXT_PUBLIC_CURRENT_BRANCH);
 
 function CustomApp({ Component, pageProps }: AppProps) {

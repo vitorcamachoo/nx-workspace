@@ -60,20 +60,17 @@ jobs:
     if: needs.prepare.outputs.skip == 'false'
     runs-on: ubuntu-latest
     needs: [prepare]
-      
-    env: 
-      NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
-
     strategy:
       matrix: 
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
-    
     steps:
       - uses: actions/checkout@v2
      
       - name: Deploy Backoffice Producer
         if: contains(matrix.affected, 'application-1')
         uses: amondnet/vercel-action@v20
+        env: 
+          NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
