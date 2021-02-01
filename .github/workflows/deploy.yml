@@ -79,8 +79,8 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.vitorcamacho.vercel.app
-            ${{BRANCH}}.vitorcamacho.vercel.app
-            pr${{PR_NUMBER}}.vitorcamacho.vercel.app
+            {{BRANCH}}.vitorcamacho.vercel.app
+            pr-{{PR_NUMBER}}.vitorcamacho.vercel.app
         env: 
           NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
           NEXT_PUBLIC_CURRENT_BRANCH2: FEATURE/BRANCH

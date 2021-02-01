@@ -4,11 +4,14 @@ import Head from 'next/head';
 import { ReactComponent as NxLogo } from '../public/nx-logo-white.svg';
 import './styles.css';
 
-console.log();
 console.log(process.env);
 console.log(
   'process.env.NEXT_PUBLIC_CURRENT_BRANCH',
   process.env.NEXT_PUBLIC_CURRENT_BRANCH
+);
+console.log(
+  'process.env.NEXT_PUBLIC_CURRENT_BRANCH2',
+  process.env.NEXT_PUBLIC_CURRENT_BRANCH2
 );
 
 function CustomApp({ Component, pageProps }: AppProps) {
