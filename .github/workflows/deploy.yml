@@ -64,7 +64,8 @@ jobs:
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy to Netlify
+      - name: Deploy Backoffice Producer
+        if: contains(matrix.affected, 'application-1')
         uses: nwtgck/actions-netlify@v1.1
         with:
           publish-dir: './dist/apps/application-1'
