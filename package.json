@@ -41,6 +41,7 @@
     "@babel/preset-env": "7.12.11",
     "@babel/preset-react": "7.12.10",
     "@babel/preset-typescript": "7.12.7",
+    "@netlify-builder/deploy": "^3.2.0",
     "@nrwl/cli": "11.2.6",
     "@nrwl/cypress": "11.2.6",
     "@nrwl/eslint-plugin-nx": "11.2.6",
