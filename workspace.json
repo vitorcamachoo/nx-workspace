@@ -51,7 +51,7 @@
           }
         },
         "deploy": {
-          "builder": "@netlify-builder/deploy:deploy",
+          "builder": "./tools/deploy:deploy",
           "options": {
             "outputPath": "dist/apps/application-1/exported",
             "siteId": "1dcbcee7-e3cd-4926-b07d-ca62a4f00471"
