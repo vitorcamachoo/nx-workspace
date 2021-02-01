@@ -61,19 +61,19 @@ jobs:
       affected: ${{ steps.parser.outputs.affected }}
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
-  # deploy:
-  #   if: needs.prepare.outputs.skip == 'false' && !contains(github.event.head_commit.message, '[skip ci]')
-  #   runs-on: ubuntu-latest
-  #   needs: [prepare]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-  #     - name: Deploy affected applications
-  #       shell: bash 
-  #       run: |
-  #         npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }} --verbose
+  deploy:
+    if: needs.prepare.outputs.skip == 'false' && !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Deploy affected applications
+        shell: bash 
+        run: |
+          npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }} --verbose
