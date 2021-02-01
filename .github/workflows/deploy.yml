@@ -79,4 +79,4 @@ jobs:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
-          nx affected --target=deploy "--parallel" "--base" "feature/netlify-deploy~1" "--head" "b20990a8405a2258472cd415707fbcd3e12fb9b8"    
+          npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }}
