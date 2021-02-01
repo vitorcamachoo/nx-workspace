@@ -40,7 +40,7 @@ jobs:
         id: npm-cache
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-111
 
       - run: |
             echo not-affected: ${{steps.nx-changes.outputs.not-affected == 'false'}}
