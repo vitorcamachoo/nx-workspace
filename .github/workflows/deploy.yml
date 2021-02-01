@@ -43,8 +43,8 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - run: |
-            echo steps.npm-cache.outputs.cache-hit
-            echo steps.nx-changes.outputs.not-affected
+            echo {{steps.npm-cache.outputs.cache-hit}}
+            echo {{steps.nx-changes.outputs.not-affected}}
       
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true' || steps.nx-changes.outputs.not-affected == 'false'
