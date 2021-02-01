@@ -1,6 +1,6 @@
 {
   "npmScope": "nrwl-workspace",
-  "affected": { "defaultBase": "master" },
+  "affected": { "defaultBase": "develop" },
   "implicitDependencies": {
     "workspace.json": "*",
     "package.json": { "dependencies": "*", "devDependencies": "*" },
@@ -18,7 +18,6 @@
     }
   },
   "projects": {
-    "application-1": { "tags": [] },
-    "application-2": { "tags": [] }
+    "application-1": { "tags": [] }
   }
 }
