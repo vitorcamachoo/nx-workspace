@@ -10,8 +10,6 @@ function CustomApp({ Component, pageProps }: AppProps) {
       </Head>
       Last version: <br />
       Last version: <br />
-      Last version: <br />
-      Last version: <br />
       Branch: 111<i>{process.env.NEXT_PUBLIC_BRANCH}</i> <br />
       Commit: 222<i>{process.env.NEXT_PUBLIC_COMMIT}</i>
     </>
