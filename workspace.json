@@ -130,13 +130,6 @@
             "jestConfig": "apps/application-2/jest.config.js",
             "passWithNoTests": true
           }
-        },
-        "deploy": {
-          "builder": "@netlify-builder/deploy:deploy",
-          "options": {
-            "outputPath": "dist/apps/application-2",
-            "siteId": "e02d9a59-4986-4087-8305-94f2161605a0"
-          }
         }
       }
     }
