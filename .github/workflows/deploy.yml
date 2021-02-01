@@ -21,6 +21,7 @@ jobs:
         shell: bash
         id: branch
         run:  |
+          echo "::set-output name=PARSED_BRANCH::${GITHUB_REF#refs/heads/} | tr / -"
           echo "::set-output name=HEAD::${{ github.sha }}"
           if [[ $GITHUB_BASE_REF ]]
           then
@@ -28,7 +29,6 @@ jobs:
           else
             echo "::set-output name=BRANCH_REF::${GITHUB_REF#refs/heads/}~1"
           fi
-      
       - name: Detect changed directories
         uses: gagle/nx-check-changes@v1.0.0
         id: nx-changes
@@ -52,6 +52,7 @@ jobs:
           echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]"
           
     outputs:
+      branch: ${{ steps.branch.outputs.PARSED_BRANCH }}
       affected: ${{ steps.parser.outputs.affected }}
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
@@ -63,14 +64,14 @@ jobs:
     strategy:
       matrix: 
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
+    env: 
+      NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
     steps:
       - uses: actions/checkout@v2
      
       - name: Deploy Backoffice Producer
         if: contains(matrix.affected, 'application-1')
         uses: amondnet/vercel-action@v20
-        env: 
-          NEXT_PUBLIC_CURRENT_BRANCH: feature/develop-branch
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
@@ -79,17 +80,17 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.vitorcamacho.vercel.app
-            {{BRANCH}}.vitorcamacho.vercel.app
+            ${{ needs.prepare.outputs.branch }}.vitorcamacho.vercel.app
 
-      # - name: Deploy Backoffice Staff
-      #   if: contains(matrix.affected, 'application-2')
-      #   uses: amondnet/vercel-action@v20
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     github-token: ${{ secrets.GITHUB_TOKEN }} 
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
-      #     vercel-args: '--prod'
-          # alias-domains: |
-          #   *.application2-vitorcamacho.app
-          #   {{BRANCH}}.application2-vitorcamacho.app
+  #     # - name: Deploy Backoffice Staff
+  #     #   if: contains(matrix.affected, 'application-2')
+  #     #   uses: amondnet/vercel-action@v20
+  #     #   with:
+  #     #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #     #     github-token: ${{ secrets.GITHUB_TOKEN }} 
+  #     #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  #     #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
+  #     #     vercel-args: '--prod'
+  #         # alias-domains: |
+  #         #   *.application2-vitorcamacho.app
+  #         #   {{BRANCH}}.application2-vitorcamacho.app
