@@ -64,13 +64,14 @@ jobs:
       matrix: 
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
+      - run: echo ${{ needs.prepare.outputs.branch }}
       - uses: actions/checkout@v2
      
       - name: Deploy Backoffice Producer
         if: contains(matrix.affected, 'application-1')
         uses: amondnet/vercel-action@v20
         env: 
-          NEXT_PUBLIC_CURRENT_BRANCH: ${{ env.VERCEL_GIT_COMMIT_REF }}
+          NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
