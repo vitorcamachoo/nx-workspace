@@ -28,6 +28,7 @@ jobs:
           else
             echo "::set-output name=BRANCH_REF::${GITHUB_REF#refs/heads/}~1"
           fi
+
       - name: Detect changed directories
         uses: gagle/nx-check-changes@v1.0.0
         id: nx-changes
@@ -41,8 +42,12 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
+      - run: |
+            echo not-affected: ${{steps.nx-changes.outputs.not-affected == 'false'}}
+            echo cache-hit: ${{steps.npm-cache.outputs.cache-hit != 'true'}}
+      
       - name: Install Dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
+        if: steps.nx-changes.outputs.not-affected == 'false' && steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
          
       - name: Parsing affected applications
@@ -51,57 +56,27 @@ jobs:
           echo "::set-output name=affected::[$(echo ${{ steps.nx-changes.outputs.changed-dirs }} | sed "s/[^ ][^ ]*/\"&\"/g" | sed 's/ /, /g')]"
           
     outputs:
+      baseRef: ${{ steps.branch.outputs.BRANCH_REF }}
+      headRef: ${{ steps.branch.outputs.HEAD }}
       affected: ${{ steps.parser.outputs.affected }}
       skip: ${{ steps.nx-changes.outputs.not-affected }}
 
   deploy:
-    if: needs.prepare.outputs.skip == 'false'
+    if: needs.prepare.outputs.skip == 'false' && !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ubuntu-latest
     needs: [prepare]
-      
-    strategy:
-      matrix: 
-        affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy Backoffice Producer
-        if: contains(matrix.affected, 'application-1')
-        uses: nwtgck/actions-netlify@v1.1
         with:
-          publish-dir: './dist/apps/application-1'
-          production-branch: ${GITHUB_REF#refs/heads/}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
+          fetch-depth: 0
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Deploy affected applications
+        shell: bash
         env:
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-          NETLIFY_SITE_ID: fe6dd9a6-df4b-426e-97ed-aaff0fc28c57
-        timeout-minutes: 1
-
-      # - name: Deploy Backoffice Producer
-      #   if: contains(matrix.affected, 'application-1')
-      #   uses: amondnet/vercel-action@v20
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     github-token: ${{ secrets.GITHUB_TOKEN }} 
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_1 }} 
-      #     vercel-args: '--prod'
-      #     alias-domains: |
-      #       *.vitorcamacho.vercel.app
-      #       {{BRANCH}}.vitorcamacho.vercel.app
-
-  #     # - name: Deploy Backoffice Staff
-  #     #   if: contains(matrix.affected, 'application-2')
-  #     #   uses: amondnet/vercel-action@v20
-  #     #   with:
-  #     #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-  #     #     github-token: ${{ secrets.GITHUB_TOKEN }} 
-  #     #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-  #     #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
-  #     #     vercel-args: '--prod'
-  #         # alias-domains: |
-  #         #   *.application2-vitorcamacho.app
-  #         #   {{BRANCH}}.application2-vitorcamacho.app
+        run: |
+          nx affected --target=deploy "--parallel" "--base" "feature/netlify-deploy~1" "--head" "b20990a8405a2258472cd415707fbcd3e12fb9b8"    
