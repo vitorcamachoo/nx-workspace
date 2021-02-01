@@ -7,7 +7,6 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  CURRENT_BRANCH: ${{ echo ${GITHUB_HEAD_REF} }}
 
 jobs:
   prepare:
