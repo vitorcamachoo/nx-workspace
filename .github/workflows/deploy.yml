@@ -69,6 +69,8 @@ jobs:
       - name: Deploy Backoffice Producer
         if: contains(matrix.affected, 'application-1')
         uses: amondnet/vercel-action@v20
+        env:
+          NEXT_PUBLIC_BLOCKNATIVE_KEY: 'feature/pull-request'
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
@@ -79,15 +81,15 @@ jobs:
             *.vitorcamacho.vercel.app
             {{BRANCH}}.vitorcamacho.vercel.app
 
-      - name: Deploy Backoffice Staff
-        if: contains(matrix.affected, 'application-2')
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }} 
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
-          vercel-args: '--prod'
+      # - name: Deploy Backoffice Staff
+      #   if: contains(matrix.affected, 'application-2')
+      #   uses: amondnet/vercel-action@v20
+      #   with:
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+      #     github-token: ${{ secrets.GITHUB_TOKEN }} 
+      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_2 }} 
+      #     vercel-args: '--prod'
           # alias-domains: |
           #   *.application2-vitorcamacho.app
           #   {{BRANCH}}.application2-vitorcamacho.app
