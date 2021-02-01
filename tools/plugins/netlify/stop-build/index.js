@@ -1,6 +1,6 @@
 module.exports = {
     onPreBuild: ({ utils }) => {
-      const currentProject = process.env.PROJECT_NAME;
+      const currentProject = process.env.PROJECT_NAME || 'application-1';
       const lastDeployedCommit = process.env.CACHED_COMMIT_REF;
       const latestCommit = 'HEAD';
       const projectHasChanged = projectChanged(
@@ -20,10 +20,9 @@ module.exports = {
     const execSync = require('child_process').execSync;
     const getAffected = `npx nx affected:apps --silent --base=${fromHash} --head=${toHash} --plain`;
     const output = execSync(getAffected).toString();
-    console.log({output})
     if(output.length == 0) return false
-    const parsedOutput = output.replace('\n', ' ').split(' ') 
-    console.log(parsedOutput)
+    const parsedOutput = output.replace('\n', '').split(' ') 
+
     //get the list of changed projects from the output
     if (parsedOutput.find(project => project === currentProject)) {
       return true;
