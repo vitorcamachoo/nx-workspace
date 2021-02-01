@@ -78,4 +78,6 @@ jobs:
         env:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
+          echo secret: ${{ secrets.NETLIFY_TOKEN }}
+          echo env: ${{ env.NETLIFY_TOKEN }}
           npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }}
