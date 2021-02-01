@@ -40,14 +40,14 @@ jobs:
         id: npm-cache
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-111
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - run: |
             echo not-affected: ${{steps.nx-changes.outputs.not-affected == 'false'}}
             echo cache-hit: ${{steps.npm-cache.outputs.cache-hit != 'true'}}
       
       - name: Install Dependencies
-        if: steps.npm-cache.outputs.cache-hit != 'true'
+        if: steps.nx-changes.outputs.not-affected == 'false' && steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
          
       - name: Parsing affected applications
