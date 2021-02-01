@@ -64,14 +64,13 @@ jobs:
       matrix: 
         affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
-      - run: echo ${{ needs.prepare.outputs.branch }}
+      - run: echo $
       - uses: actions/checkout@v2
      
       - name: Deploy Backoffice Producer
         if: contains(matrix.affected, 'application-1')
         uses: amondnet/vercel-action@v20
-        env: 
-          NEXT_PUBLIC_CURRENT_BRANCH: feature/merge-develop
+        
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }} 
@@ -80,8 +79,11 @@ jobs:
           vercel-args: '--prod'
           alias-domains: |
             *.vitorcamacho.vercel.app
-            {{needs.prepare.outputs.branch}}.vitorcamacho.vercel.app
-
+            ${{BRANCH}}.vitorcamacho.vercel.app
+            pr${{PR_NUMBER}}.vitorcamacho.vercel.app
+        env: 
+          NEXT_PUBLIC_CURRENT_BRANCH: ${{ needs.prepare.outputs.branch }}
+          NEXT_PUBLIC_CURRENT_BRANCH2: FEATURE/BRANCH
   #     # - name: Deploy Backoffice Staff
   #     #   if: contains(matrix.affected, 'application-2')
   #     #   uses: amondnet/vercel-action@v20

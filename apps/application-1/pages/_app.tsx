@@ -6,7 +6,10 @@ import './styles.css';
 
 console.log();
 console.log(process.env);
-console.log(process.env.NEXT_PUBLIC_CURRENT_BRANCH);
+console.log(
+  'process.env.NEXT_PUBLIC_CURRENT_BRANCH',
+  process.env.NEXT_PUBLIC_CURRENT_BRANCH
+);
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
