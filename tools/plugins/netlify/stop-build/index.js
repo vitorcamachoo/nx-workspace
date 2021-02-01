@@ -18,14 +18,14 @@ module.exports = {
   
   function projectChanged(currentProject, fromHash, toHash) {
     const execSync = require('child_process').execSync;
-    const getAffected = `npx nx affected:apps --silent --base=${fromHash} --head=${toHash}`;
+    const getAffected = `npx nx affected:apps --silent --base=${fromHash} --head=${toHash} --plain`;
     const output = execSync(getAffected).toString();
-    
+    console.log({output})
     if(output.length == 0) return false
-
+    const parsedOutput = output.replace('\n', ' ').split(' ') 
+    console.log(parsedOutput)
     //get the list of changed projects from the output
-    const changedProjects = JSON.parse(output).projects;
-    if (changedProjects.find(project => project === currentProject)) {
+    if (parsedOutput.find(project => project === currentProject)) {
       return true;
     } else {
       return false;
