@@ -9,6 +9,8 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <title>Welcome to application-1!</title>
       </Head>
       Last version: <br />
+      Last version: <br />
+      Last version: <br />
     </>
   );
 }
