@@ -75,5 +75,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Deploy affected applications
         shell: bash 
+        env:
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
           npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }}
