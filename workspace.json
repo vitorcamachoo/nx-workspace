@@ -54,7 +54,7 @@
           "builder": "@netlify-builder/deploy:deploy",
           "options": {
             "outputPath": "dist/apps/application-1/exported",
-            "siteId": "c24578d2-61a6-47ef-9213-d0a20a0f3f78"
+            "siteId": "fe6dd9a6-df4b-426e-97ed-aaff0fc28c57"
           }
         }
       }
@@ -129,13 +129,6 @@
           "options": {
             "jestConfig": "apps/application-2/jest.config.js",
             "passWithNoTests": true
-          }
-        },
-        "deploy": {
-          "builder": "@netlify-builder/deploy:deploy",
-          "options": {
-            "outputPath": "dist/apps/application-1/exported",
-            "siteId": "c24578d2-61a6-47ef-9213-d0a20a0f3f78"
           }
         }
       }
