@@ -28,6 +28,7 @@ jobs:
           else
             echo "::set-output name=BRANCH_REF::${GITHUB_REF#refs/heads/}~1"
           fi
+
       - name: Detect changed directories
         uses: gagle/nx-check-changes@v1.0.0
         id: nx-changes
