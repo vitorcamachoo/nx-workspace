@@ -76,6 +76,6 @@ jobs:
       - name: Deploy affected applications
         shell: bash
         env:
-          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
           npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }}    
