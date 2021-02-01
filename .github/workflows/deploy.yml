@@ -41,7 +41,9 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
+      - run: |
+            echo steps.npm-cache.outputs.cache-hit
+            echo steps.nx-changes.outputs.not-affected
       - name: Install Dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true' && steps.nx-changes.outputs.not-affected == 'false'
         run: npm install
@@ -69,7 +71,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Test affected applications
+      - name: Deploy affected applications
         shell: bash
         env:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
