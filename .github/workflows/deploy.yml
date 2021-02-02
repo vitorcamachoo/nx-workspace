@@ -61,7 +61,6 @@ jobs:
     #     affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy Backoffice Producer
         # if: contains(matrix.affected, 'application-1')
       - uses: vitorcamachoo/vercel-action@v21.0.0
         with:
