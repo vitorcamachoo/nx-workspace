@@ -81,7 +81,9 @@ jobs:
             echo cache-hit: ${{steps.npm-cache.outputs.cache-hit != 'true'}}
       - name: Deploy affected applications
         shell: bash
+        id: deploy
         env:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
           npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }}
+      - run: ${{join(steps.deploy.outputs.*, '\n')}}
