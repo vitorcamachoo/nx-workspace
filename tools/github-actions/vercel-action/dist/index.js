@@ -1228,7 +1228,6 @@ async function vercelDeploy(ref, commit) {
     args.push('--scope', vercelScope);
   }
 
-  await exec.exec('npx', ['vercel', ...args], options);
   await Promise.resolve((res) => exec.exec('npx', ['vercel', ...args], {
     ...workingDirectory && { cwd: workingDirectory },
     listeners: {
