@@ -18,6 +18,11 @@
     }
   },
   "projects": {
-    "application-1": { "tags": [] }
+    "application-1": { "tags": [] },
+    "application-2": { "tags": [] },
+    "application-2-e2e": {
+      "tags": [],
+      "implicitDependencies": ["application-2"]
+    }
   }
 }
