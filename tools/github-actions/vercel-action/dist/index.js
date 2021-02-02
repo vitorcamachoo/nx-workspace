@@ -1117,9 +1117,9 @@ const workingDirectory = core.getInput('working-directory');
 const prNumberRegExp = /{{\s*PR_NUMBER\s*}}/g;
 const branchRegExp = /{{\s*BRANCH\s*}}/g;
 
-function isPullRequestType(event) {
-  return event.startsWith('pull_request');
-}
+// function isPullRequestType(event) {
+//   return event.startsWith('pull_request');
+// }
 
 function slugify(str) {
   const slug = str
@@ -1136,12 +1136,10 @@ function slugify(str) {
 }
 
 // Vercel
-const vercelToken = core.getInput('vercel-token', { required: true });
-const vercelArgs = core.getInput('vercel-args');
-const vercelOrgId = core.getInput('vercel-org-id');
-const vercelProjectId = core.getInput('vercel-project-id');
-const vercelScope = core.getInput('scope');
-const vercelProjectName = core.getInput('vercel-project-name');
+const vercelToken = 'YN9Wo93V7aLRTOjBPCpw1eKs';
+const vercelOrgId = 'nI8rwi0PrCS4dtjLugZQt3pg';
+const vercelProjectId ='prj_jkpGohYQzgHrw2WoajRcJxzRBoXB';
+const vercelScope = 'vitorcamacho';
 const aliasDomains = core
   .getInput('alias-domains')
   .split('\n')
@@ -1149,12 +1147,12 @@ const aliasDomains = core
   .map(s => {
     let url = s;
     let branch = slugify(context.ref.replace('refs/heads/', ''));
-    if (isPullRequestType(context.eventName)) {
-      const pr =
-        context.payload.pull_request || context.payload.pull_request_target;
-      branch = slugify(pr.head.ref.replace('refs/heads/', ''));
-      url = url.replace(prNumberRegExp, context.issue.number.toString());
-    }
+    // if (isPullRequestType(context.eventName)) {
+    //   const pr =
+    //     context.payload.pull_request || context.payload.pull_request_target;
+    //   branch = slugify(pr.head.ref.replace('refs/heads/', ''));
+    //   url = url.replace(prNumberRegExp, context.issue.number.toString());
+    // }
     url = url.replace(branchRegExp, branch);
 
     return url;
@@ -1177,76 +1175,37 @@ async function setEnv() {
   }
 }
 
-async function vercelDeploy(ref, commit) {
+async function vercelDeploy(ref, commit, skip) {
   let myOutput = '';
-  // eslint-disable-next-line no-unused-vars
   let myError = '';
-  const options = {};
-  options.listeners = {
-    stdout: data => {
-      myOutput += data.toString();
-      core.info(data.toString());
-    },
-    stderr: data => {
-      // eslint-disable-next-line no-unused-vars
-      myError += data.toString();
-      core.info(data.toString());
-    },
-  };
-  if (workingDirectory) {
-    options.cwd = workingDirectory;
-  }
-
-  const args = [
-    ...vercelArgs.split(/ +/),
-    '-t',
-    vercelToken,
-    '-m',
-    `githubCommitSha=${context.sha}`,
-    '-m',
-    `githubCommitAuthorName=${context.actor}`,
-    '-m',
-    `githubCommitAuthorLogin=${context.actor}`,
-    '-m',
-    'githubDeployment=1',
-    '-m',
-    `githubOrg=${context.repo.owner}`,
-    '-m',
-    `githubRepo=${context.repo.repo}`,
-    '-m',
-    `githubCommitOrg=${context.repo.owner}`,
-    '-m',
-    `githubCommitRepo=${context.repo.repo}`,
-    '-m',
-    `githubCommitMessage=${commit}`,
-    '-m',
-    `githubCommitRef=${ref}`,
-  ];
+  const args = ['-t', vercelToken];
 
   if (vercelScope) {
     core.info('using scope');
     args.push('--scope', vercelScope);
   }
 
-  await Promise.resolve((res) => exec.exec('npx', ['vercel', ...args], {
-    ...workingDirectory && { cwd: workingDirectory },
-    listeners: {
-      stdout: data => {
-        // eslint-disable-next-line no-unused-vars
-        if(data.toString().includes('Inspect')) {
-          core.info('INSPECT FOUND!!!! ' + data.toString);
-          return res(myOutput)
-        }
-        myOutput += data.toString();
-        core.info(data.toString());
-      },
-      stderr: data => {
-        myError += data.toString();
-        core.info(data.toString());
-      },
-    }
-  }))
-  return myOutput;
+  return new Promise((res) => {
+    exec.exec('npx', ['vercel', ...args], {
+      ...workingDirectory && { cwd: workingDirectory },
+      listeners: {
+        stdout: data => {
+          // eslint-disable-next-line no-unused-vars
+          if(skip && data.toString().includes('https://')) {
+            core.info('INSPECT FOUND!!!! ' + data.toString());
+            return res(data.toString())
+          } else {
+            myOutput += data.toString();
+            core.info(data.toString());
+          }
+        },
+        stderr: data => {
+          myError += data.toString();
+          core.info(data.toString());
+        },
+      }
+    })
+  })
 }
 
 async function vercelInspect(deploymentUrl) {
@@ -1290,13 +1249,13 @@ async function findCommentsForEvent() {
       commit_sha: context.sha,
     });
   }
-  if (isPullRequestType(context.eventName)) {
-    core.debug(`event is "${context.eventName}", use "listComments"`);
-    return octokit.issues.listComments({
-      ...context.repo,
-      issue_number: context.issue.number,
-    });
-  }
+  // if (isPullRequestType(context.eventName)) {
+  //   core.debug(`event is "${context.eventName}", use "listComments"`);
+  //   return octokit.issues.listComments({
+  //     ...context.repo,
+  //     issue_number: context.issue.number,
+  //   });
+  // }
   core.error('not supported event_type');
   return [];
 }
@@ -1452,32 +1411,32 @@ async function run() {
   let commit = execSync('git log -1 --pretty=format:%B')
     .toString()
     .trim();
-  if (github.context.eventName === 'push') {
-    const pushPayload = github.context.payload;
-    core.debug(`The head commit is: ${pushPayload.head_commit}`);
-  } else if (isPullRequestType(github.context.eventName)) {
-    const pullRequestPayload = github.context.payload;
-    const pr =
-      pullRequestPayload.pull_request || pullRequestPayload.pull_request_target;
-    core.debug(`head : ${pr.head}`);
+  // if (github.context.eventName === 'push') {
+  //   const pushPayload = github.context.payload;
+  //   core.debug(`The head commit is: ${pushPayload.head_commit}`);
+  // } else if (isPullRequestType(github.context.eventName)) {
+  //   const pullRequestPayload = github.context.payload;
+  //   const pr =
+  //     pullRequestPayload.pull_request || pullRequestPayload.pull_request_target;
+  //   core.debug(`head : ${pr.head}`);
 
-    ref = pr.head.ref;
-    sha = pr.head.sha;
-    core.debug(`The head ref is: ${pr.head.ref}`);
-    core.debug(`The head sha is: ${pr.head.sha}`);
+  //   ref = pr.head.ref;
+  //   sha = pr.head.sha;
+  //   core.debug(`The head ref is: ${pr.head.ref}`);
+  //   core.debug(`The head sha is: ${pr.head.sha}`);
 
-    if (octokit) {
-      const { data: commitData } = await octokit.git.getCommit({
-        ...context.repo,
-        commit_sha: sha,
-      });
-      commit = commitData.message;
-      core.debug(`The head commit is: ${commit}`);
-    }
-  }
-
-  const deploymentUrl = await vercelDeploy(ref, commit);
-
+  //   if (octokit) {
+  //     const { data: commitData } = await octokit.git.getCommit({
+  //       ...context.repo,
+  //       commit_sha: sha,
+  //     });
+  //     commit = commitData.message;
+  //     core.debug(`The head commit is: ${commit}`);
+  //   }
+  // }
+  let skip = true
+  const deploymentUrl = await vercelDeploy(ref, commit, skip);
+  console.log('finish deploy', { deploymentUrl })
   if (deploymentUrl) {
     core.info('set preview-url output');
     if (aliasDomains && aliasDomains.length) {
@@ -1490,8 +1449,7 @@ async function run() {
     core.warning('get preview-url error');
   }
 
-  const deploymentName =
-    vercelProjectName || (await vercelInspect(deploymentUrl));
+  const deploymentName = !skip && (await vercelInspect(deploymentUrl))
   if (deploymentName) {
     core.info('set preview-name output');
     core.setOutput('preview-name', deploymentName);
@@ -1504,17 +1462,17 @@ async function run() {
     await aliasDomainsToDeployment(deploymentUrl);
   }
 
-  if (githubComment && githubToken) {
-    if (context.issue.number) {
-      core.info('this is related issue or pull_request');
-      await createCommentOnPullRequest(sha, deploymentUrl, deploymentName);
-    } else if (context.eventName === 'push') {
-      core.info('this is push event');
-      await createCommentOnCommit(sha, deploymentUrl, deploymentName);
-    }
-  } else {
-    core.info('comment : disabled');
-  }
+  // if (githubComment && githubToken) {
+  //   if (context.issue.number) {
+  //     core.info('this is related issue or pull_request');
+  //     await createCommentOnPullRequest(sha, deploymentUrl, deploymentName);
+  //   } else if (context.eventName === 'push') {
+  //     core.info('this is push event');
+  //     await createCommentOnCommit(sha, deploymentUrl, deploymentName);
+  //   }
+  // } else {
+  //   core.info('comment : disabled');
+  // }
 }
 
 run().catch(error => {
