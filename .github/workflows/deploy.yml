@@ -85,7 +85,7 @@ jobs:
         env:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
-          echo "::set-output name=return::[$(npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }})]"
+          echo "::set-output name=return::$(npm run affected:deploy -- --parallel --base ${{ needs.prepare.outputs.baseRef }} --head ${{ needs.prepare.outputs.headRef }})"
     
       
       - run: ${{join(steps.deploy.outputs.return, '\n')}}
