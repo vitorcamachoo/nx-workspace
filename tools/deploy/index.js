@@ -18,7 +18,7 @@ exports.default = architect_1.createBuilder((builderConfig, context) => __awaite
         context.logger.info(`📦 Skipping build`);
     }
     else {
-        const configuration = builderConfig.configuration || 'production';
+        const configuration = builderConfig.configuration;
         const overrides = Object.assign({}, (builderConfig.baseHref && { baseHref: builderConfig.baseHref }));
         if (!context.target) {
             throw new Error('Cannot build the application without a target');

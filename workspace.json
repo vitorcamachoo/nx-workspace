@@ -34,6 +34,9 @@
           "executor": "@nrwl/next:export",
           "options": {
             "buildTarget": "application-1:build:production"
+          },
+          "configurations": {
+            "production": {}
           }
         },
         "lint": {
@@ -53,6 +56,7 @@
         "deploy": {
           "builder": "./tools/deploy:deploy",
           "options": {
+            "buildTarget": "export",
             "outputPath": "dist/apps/application-1/exported",
             "siteId": "1dcbcee7-e3cd-4926-b07d-ca62a4f00471"
           }
