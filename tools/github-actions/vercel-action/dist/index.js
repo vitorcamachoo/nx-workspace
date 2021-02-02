@@ -1234,7 +1234,7 @@ async function vercelDeploy(ref, commit) {
     listeners: {
       stdout: data => {
         // eslint-disable-next-line no-unused-vars
-        if(data.toString().contains('Inspect')) {
+        if(data.toString().includes('Inspect')) {
           core.info('INSPECT FOUND!!!! ' + data.toString);
           return res(myOutput)
         }
