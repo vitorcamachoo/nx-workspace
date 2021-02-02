@@ -1236,7 +1236,10 @@ async function vercelDeploy(ref, commit) {
         // eslint-disable-next-line no-unused-vars
         myOutput += data.toString();
         core.info(data.toString());
-        if(myOutput.contains('Inspect: ')) res(myOutput)
+        if(myOutput.contains('Inspect: ')) {
+          core.info('INSPECT FOUND!!!! ' + data.toString);
+          return res(myOutput)
+        }
       },
       stderr: data => {
         myError += data.toString();

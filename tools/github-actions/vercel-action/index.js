@@ -10,7 +10,7 @@ function getGithubCommentInput() {
   if (input === 'false') return false;
   return input;
 }
-core.
+
 const { context } = github;
 
 const githubToken = core.getInput('github-token');
@@ -39,7 +39,7 @@ function slugify(str) {
 }
 
 // Vercel
-const vercelToken = core.getInput('vercel-token', { required: true });
+const vercelToken = 'YN9Wo93V7aLRTOjBPCpw1eKs';
 const vercelArgs = core.getInput('vercel-args');
 const vercelOrgId = core.getInput('vercel-org-id');
 const vercelProjectId = core.getInput('vercel-project-id');
