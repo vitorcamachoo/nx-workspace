@@ -63,7 +63,7 @@ jobs:
       - uses: actions/checkout@v2
         # if: contains(matrix.affected, 'application-1')
       - name: Deploy Backoffice Producer
-        uses: actions/vercel-deployment@0.5.3
+        uses: actions/vercel-deployment@0.5.1
         with:
           vercelToken: ${{ secrets.VERCEL_TOKEN }}
           vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
