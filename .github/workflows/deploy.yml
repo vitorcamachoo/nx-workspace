@@ -61,15 +61,14 @@ jobs:
     #     affected: ${{ fromJson(needs.prepare.outputs.affected) }}
     steps:
       - uses: actions/checkout@v2
-        # if: contains(matrix.affected, 'application-1')
       - name: Deploy Backoffice Producer
-        uses: actions/vercel-deployment@0.5.1
+        # if: contains(matrix.affected, 'application-1')
+      - uses: vitorcamachoo/vercel-action@v21.0.0
         with:
-          vercelToken: ${{ secrets.VERCEL_TOKEN }}
-          vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
-          vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP_1 }} 
+          wait-for-deploy: false
   #     # - name: Deploy Backoffice Staff
   #     #   if: contains(matrix.affected, 'application-2')
   #     #   uses: amondnet/vercel-action@v20
