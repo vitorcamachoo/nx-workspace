@@ -125,8 +125,11 @@ exports.default = architect_1.createBuilder((builderConfig, context) => __awaite
         return { success: true };
     }
     catch (e) {
+        context.logger.info("ERROReeee"+JSON.stringify(e));
+        context.logger.info("ERROReeee"+e.code);
+        context.logger.info("ERROReeee"+e.message);
         context.logger.error("❌ Deployment failed");
-        context.logger.error("❌ Deployment failed", e);
+        context.logger.info("ERROReeee", e.message);
         return {
             error: e.message,
             success: false

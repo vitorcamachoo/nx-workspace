@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-console.log('te');
+console.log('tet');
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
