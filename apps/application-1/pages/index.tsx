@@ -1,8 +1,20 @@
+import { GetStaticProps } from 'next';
 import React from 'react';
+import Image from 'next/image';
 
 import styles from './index.module.css';
 
-export function Index() {
+export const getStaticProps: GetStaticProps = async () => {
+  const response = await fetch('https://api.jikan.moe/v3/manga/1/characters');
+  const data = await response.json();
+
+  return {
+    props: data,
+    revalidate: 1,
+  };
+};
+
+function Index(props) {
   /*
    * Replace the elements below with your own.
    *
@@ -66,32 +78,14 @@ export function Index() {
           </a>
         </li>
       </ul>
-      <h2>Next Steps</h2>
-      <p>Here are some things you can do with Nx.</p>
-      <details open>
-        <summary>Add UI library</summary>
-        <pre>{`# Generate UI lib
-nx g @nrwl/react:lib ui
 
-# Add a component
-nx g @nrwl/react:component xyz --project ui`}</pre>
-      </details>
-      <details>
-        <summary>View dependency graph</summary>
-        <pre>{`nx dep-graph`}</pre>
-      </details>
-      <details>
-        <summary>Run affected commands</summary>
-        <pre>{`# see what's been affected by changes
-nx affected:dep-graph
-
-# run tests for current changes
-nx affected:test
-
-# run e2e tests for current changes
-nx affected:e2e
-`}</pre>
-      </details>
+      {props.characters &&
+        props.characters.map((char) => (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Image src={char.image_url} height={100} width={100} />
+            <p>{char.name}</p>
+          </div>
+        ))}
     </div>
   );
 }
