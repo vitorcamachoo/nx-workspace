@@ -51,12 +51,10 @@
           }
         },
         "deploy": {
-          "executor": "@nrwl/workspace:run-commands",
+          "executor": "@netlify-builder/deploy:deploy",
           "options": {
-            "commands": [
-              "VERCEL_PROJECT_ID=$BACKOFFICE_STAFF_PROJECT_ID npx vercel -t $VERCEL_TOKEN"
-            ],
-            "readyWhen": "Inspect"
+            "outputPath": "dist/apps/application-1",
+            "siteId": "1dcbcee7-e3cd-4926-b07d-ca62a4f00471"
           }
         }
       }
