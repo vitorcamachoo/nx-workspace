@@ -2,7 +2,7 @@
 const withNx = require('@nrwl/next/plugins/with-nx');
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
-const config = require('../../next.config');
+const config = require('../../next.base.config');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
